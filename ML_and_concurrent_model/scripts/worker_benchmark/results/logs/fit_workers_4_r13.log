@@ -1,0 +1,65 @@
+[profile] start total                       
+[profile] start load_csv_pipeline           
+[profile] end   load_csv_pipeline            elapsed=   6.218s alloc=  2098.4MB sys=  2203.5MB num_gc=25
+[profile] start split_train_test            
+[profile] end   split_train_test             elapsed=   0.023s alloc=  2265.8MB sys=  2371.7MB num_gc=25
+[profile] start build_encoding_plan         
+[profile] end   build_encoding_plan          elapsed=   0.236s alloc=  2266.2MB sys=  2371.7MB num_gc=25
+[profile] start build_train_matrix          
+[profile] end   build_train_matrix           elapsed=   0.236s alloc=  2716.9MB sys=  3536.9MB num_gc=26
+[profile] start build_test_matrix           
+[profile] end   build_test_matrix            elapsed=   0.072s alloc=  2970.2MB sys=  3789.2MB num_gc=26
+[profile] start standardize                 
+[profile] end   standardize                  elapsed=   3.242s alloc=  4382.6MB sys=  5206.7MB num_gc=26
+============================================================
+Entrenamiento regresion lineal (Go + gonum)
+============================================================
+Input: aqs_final_3M.csv
+Target: Arithmetic Mean
+Filas cargadas: 2285426 | Filas omitidas: 714574
+Train rows: 1880537 | Test rows: 404889
+Features numericas (11): Latitude, Longitude, Year, Observation Count, Observation Percent, Valid Day Count, Required Day Count, Null Data Count, Num Obs Below MDL, Primary Exceedance Count, Secondary Exceedance Count
+Categoricas nominales usadas (3): pollutant, Sample Duration, State Code
+Categoricas ordinales usadas (0): (ninguna)
+Total features finales tras encoding: 70
+Train-year-end: 2020
+Pipeline concurrente -> parser-workers=2, encoder-workers=2, buffers(raw=4, parsed=4, encoded=3)
+Solver -> ridge | fit-workers=4 | ridge-lambda=1
+PCA: desactivado
+[profile] start add_intercept               
+[profile] end   add_intercept                elapsed=   0.394s alloc=  2859.8MB sys=  6388.0MB num_gc=27
+[profile] start fit_linear_regression       
+[profile] end   fit_linear_regression        elapsed=   0.705s alloc=  2860.2MB sys=  6388.0MB num_gc=27
+[profile] start predict                     
+[profile] end   predict                      elapsed=   0.064s alloc=  2885.0MB sys=  6388.0MB num_gc=27
+[profile] start compute_metrics             
+[profile] end   compute_metrics              elapsed=   0.004s alloc=  2885.0MB sys=  6388.0MB num_gc=27
+
+--- Metricas ---
+Train -> MAE: 0.818094 | RMSE: 1.300616 | R2: 0.920665
+Test  -> MAE: 0.775546 | RMSE: 1.052191 | R2: 0.900432
+
+--- Coeficientes (sin intercepto) ---
+Intercepto: 3.049361
+ 1) pollutant__PM2_5                         coef_z=2.141200 | coef_aprox_escala_original=4.63480333
+ 2) Sample Duration__8_HR_RUN_AVG_END_HOUR   coef_z=-1.332022 | coef_aprox_escala_original=-3.65119114
+ 3) pollutant__O3                            coef_z=-1.008690 | coef_aprox_escala_original=-2.02183066
+ 4) Sample Duration__8_HR_RUN_AVG_BEGIN_HOUR coef_z=-1.008690 | coef_aprox_escala_original=-2.02183066
+ 5) Required Day Count                       coef_z=-0.955421 | coef_aprox_escala_original=-0.00906096
+ 6) Primary Exceedance Count                 coef_z=0.946162 | coef_aprox_escala_original=0.02379122
+ 7) Observation Count                        coef_z=0.814220 | coef_aprox_escala_original=0.00027860
+ 8) Longitude                                coef_z=-0.471949 | coef_aprox_escala_original=-0.02786895
+ 9) State Code__06                           coef_z=-0.424170 | coef_aprox_escala_original=-1.24065857
+10) Secondary Exceedance Count               coef_z=0.368682 | coef_aprox_escala_original=0.01943252
+11) Observation Percent                      coef_z=-0.320877 | coef_aprox_escala_original=-0.03416999
+12) State Code__56                           coef_z=-0.272633 | coef_aprox_escala_original=-2.20642534
+13) Sample Duration__24_HR_BLK_AVG           coef_z=-0.237430 | coef_aprox_escala_original=-1.09367336
+14) State Code__15                           coef_z=-0.235205 | coef_aprox_escala_original=-3.54395527
+15) State Code__08                           coef_z=-0.192997 | coef_aprox_escala_original=-1.27920751
+16) State Code__04                           coef_z=-0.192916 | coef_aprox_escala_original=-1.07274007
+17) Valid Day Count                          coef_z=0.172881 | coef_aprox_escala_original=0.00168975
+18) State Code__48                           coef_z=-0.157501 | coef_aprox_escala_original=-0.73600297
+19) State Code__32                           coef_z=-0.157325 | coef_aprox_escala_original=-1.17572842
+20) State Code__49                           coef_z=-0.156268 | coef_aprox_escala_original=-1.18909932
+============================================================
+[profile] end   total                        elapsed=  11.195s alloc=  2885.0MB sys=  6388.0MB num_gc=27
