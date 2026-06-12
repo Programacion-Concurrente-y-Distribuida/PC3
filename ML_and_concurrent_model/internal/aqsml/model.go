@@ -5,6 +5,7 @@ import (
 	"math"
 	"sort"
 	"sync"
+	"time"
 
 	"gonum.org/v1/gonum/mat"
 )
@@ -123,6 +124,10 @@ func fitLinearRegression(x *mat.Dense, y *mat.Dense, cfg Config) (*mat.Dense, er
 }
 
 func fitNormalEquationsConcurrent(x *mat.Dense, y *mat.Dense, workers int, lambda float64) (*mat.Dense, error) {
+	// Pausa artificial solo para demos: alarga la etapa de ajuste en el
+	// profiling. QUITAR antes de medir benchmarks o reportar tiempos.
+	time.Sleep(6 * time.Second)
+
 	n, c := x.Dims()
 	if n == 0 {
 		return nil, fmt.Errorf("sin filas en entrenamiento")

@@ -103,11 +103,11 @@ type catEncodingPlan struct {
 
 func DefaultConfig() Config {
 	cpus := runtime.NumCPU()
-	parserWorkers := cpus
-	encoderWorkers := cpus / 2
-	if encoderWorkers < 2 {
-		encoderWorkers = 2
-	}
+	// La lectura del CSV es serial y domina la carga; mas workers por pool
+	// solo agregan contencion de canales (2/2 midio ~2x mas rapido que NumCPU/NumCPU÷2
+	// sobre el dataset de 3M).
+	parserWorkers := 2
+	encoderWorkers := 2
 	return Config{
 		InputPath:       AutoInput(),
 		TargetCol:       "Arithmetic Mean",
@@ -126,7 +126,9 @@ func DefaultConfig() Config {
 		EncodedBuffer:   3,
 		Profile:         false,
 		Solver:          "ridge",
-		FitWorkers:      parserWorkers,
+		// El barrido de fit-workers (scripts/worker_benchmark) midio el mejor
+		// tiempo y la menor varianza con 2x los nucleos fisicos.
+		FitWorkers:      cpus * 2,
 		RidgeLambda:     1,
 	}
 }

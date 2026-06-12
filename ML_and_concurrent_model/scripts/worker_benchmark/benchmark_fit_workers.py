@@ -57,7 +57,6 @@ def run_one(cmd: list[str]) -> tuple[float, int, str, int]:
         peak_kb = max(peak_kb, get_peak_rss_kb(p.pid))
         if p.poll() is not None:
             break
-        time.sleep(0.08)
     if p.stdout is not None:
         rest = p.stdout.read()
         if rest:
@@ -86,7 +85,7 @@ def main() -> int:
     parser.add_argument("--max-rows", type=int, default=0)
     parser.add_argument("--num-features", required=True)
     parser.add_argument("--cat-features", required=True)
-    parser.add_argument("--fit-workers", default="2,4,6,8,10,12,14,16")
+    parser.add_argument("--fit-workers", default="4,8,12,16,20,24,28,32")
     parser.add_argument("--parser-workers", type=int, default=2)
     parser.add_argument("--encoder-workers", type=int, default=2)
     parser.add_argument("--raw-buffer", type=int, default=4)
