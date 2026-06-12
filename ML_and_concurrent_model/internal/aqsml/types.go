@@ -118,7 +118,7 @@ func DefaultConfig() Config {
 		TrainYearEnd:    2020,
 		UsePCA:          false,
 		PCAVarianceGoal: 0.95,
-		MaxRows:         250000,
+		MaxRows:         0,
 		ParserWorkers:   parserWorkers,
 		EncoderWorkers:  encoderWorkers,
 		RawBuffer:       parserWorkers * 2,
